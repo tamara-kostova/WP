@@ -67,8 +67,6 @@ public class MovieListServlet extends HttpServlet {
         String movieTitle = req.getParameter("movieTitle");
         String numberOfTickets = req.getParameter("numTickets");
         String ipAddress = req.getRemoteAddr();
-        req.setAttribute("movieTitle", movieTitle);
-        req.setAttribute("numTickets", numberOfTickets);
         ticketOrderService.placeOrder(movieTitle,"ime",ipAddress,Integer.parseInt(numberOfTickets));
         resp.sendRedirect("/ticketOrder?movieTitle=" + movieTitle + "&numTickets=" + numberOfTickets);
     }

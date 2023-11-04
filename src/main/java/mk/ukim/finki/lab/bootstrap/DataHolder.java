@@ -2,6 +2,7 @@ package mk.ukim.finki.lab.bootstrap;
 
 import jakarta.annotation.PostConstruct;
 import mk.ukim.finki.lab.model.Movie;
+import mk.ukim.finki.lab.model.TicketOrder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,9 +12,9 @@ import java.util.List;
 @Component
 public class DataHolder {
     public static List<Movie> Movies = new ArrayList<>();
+    public static List<TicketOrder> ticketOrders = new ArrayList<>();
     @PostConstruct
     public void init(){
-        Movies = new LinkedList<>();
         Movies.add(new Movie("The Godfather","Widely regarded as one of the greatest films of all time, this mob drama, based on Mario Puzo's novel of the same name, focuses on the powerful Italian-American crime family of Don Vito Corleone (Marlon Brando).",9.2));
         Movies.add(new Movie("Goodfellas","Henry grows up idolising mobsters in his impoverished neighbourhood. Things take a turn for the worse when he along with his friends Jimmy and Tommy decide to make their way up the mob hierarchy.",9.0));
         Movies.add(new Movie("Oppenheimer","During World War II, Lt. Gen. Leslie Groves Jr. appoints physicist J. Robert Oppenheimer to work on the top-secret Manhattan Project. Oppenheimer and a team of scientists spend years developing and designing the atomic bomb. ",8.9));

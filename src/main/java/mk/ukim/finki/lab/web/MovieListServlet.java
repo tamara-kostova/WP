@@ -66,8 +66,9 @@ public class MovieListServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String movieTitle = req.getParameter("movieTitle");
         String numberOfTickets = req.getParameter("numTickets");
+        String clientName = req.getParameter("clientName");
         String ipAddress = req.getRemoteAddr();
-        ticketOrderService.placeOrder(movieTitle,"ime",ipAddress,Integer.parseInt(numberOfTickets));
-        resp.sendRedirect("/ticketOrder?movieTitle=" + movieTitle + "&numTickets=" + numberOfTickets);
+        ticketOrderService.placeOrder(movieTitle,clientName,ipAddress,Integer.parseInt(numberOfTickets));
+        resp.sendRedirect("/ticketOrder?movieTitle=" + movieTitle + "&numTickets=" + numberOfTickets+ "&clientName=" + clientName);
     }
 }

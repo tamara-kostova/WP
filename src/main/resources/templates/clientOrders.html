@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Orders</title>
+</head>
+<body>
+<h3>Orders:</h3>
+<form th:method="get" th:action="@{/clientOrders}">
+    <label for="searchByTitle">Search by title:</label>
+    <input type="text" id="searchByTitle" name="searchByTitle">
+    <button type="submit">Search</button>
+</form>
+<form th:method="get" th:action="@{/clientOrders}">
+    <label for="searchByClient">Search by client:</label>
+    <input type="text" id="searchByClient" name="searchByClient">
+    <button type="submit">Search</button>
+</form>
+<th:block th:each="order: ${orders}">
+    <p >Client name: <span th:text="${order.getClientName()}"></span></p>
+    <p >Movie: <span th:text="${order.getMovieTitle()}"></span></p>
+    <p>Number of tickets: <span th:text="${order.getNumberOfTickets()}"></span></p>
+</th:block>
+</body>
+</html>

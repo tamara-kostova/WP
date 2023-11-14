@@ -3,6 +3,17 @@
 
 <meta charset="utf-8">
     <title>Movie Ticket Order page - Welcome and choose a Movie</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
     <style type="text/css">
         body {
             width: 800px;
@@ -15,30 +26,52 @@
     <h1>Welcome to our Movie Ticket Shop App</h1>
 </header>
 <main>
+    <div>
+        <a type="button" href="/movies/add-form" class="btn btn-dark add-movie-btn">
+            Add new movie
+        </a>
+        <a type="button" href="/clientOrders" class="btn btn-primary" >Client Orders</a>
+    </div>
     <h2>Choose movie:</h2>
-    <form th:method="get" th:action="@{/}">
+    <form th:method="get" th:action="@{/movies}">
         <label for="searchByTitle">Search by title:</label>
         <input type="text" id="searchByTitle" name="searchByTitle">
         <button type="submit">Search</button>
     </form>
-    <form th:method="get" th:action="@{/}">
+    <form th:method="get" th:action="@{/movies}">
         <label for="searchByRating">Search by rating:</label>
         <input type="number" id="searchByRating" name="searchByRating" min="1" max="10">
         <button type="submit">Search</button>
     </form>
-    <br><br>
-    <form th:method="post" th:action="@{/}">
-        <th:block th:each="movie: ${movies}" th:href="@{/movieDetails?title=${movie.getTitle()}}">
-            <input th:value="${movie.getTitle()}" th:text="'Title: '+${movie.getTitle()}" type="radio" name="movieTitle">
-            <p >Summary: <span th:text="${movie.getSummary()}"></span></p>
+    <br>
+    <form th:method="POST" th:action="@{/movies}" id="ticket">
+        <div th:each="movie : ${movies}">
+            <input th:value="${movie.getTitle()}" th:text="'Title: '+${movie.getTitle()}" type="radio" name="movieTitle" id="movieTitle" th:href="@{'/movieDetails?title=movieTitle' (movieTitle=${movie.getTitle()})}" form="ticket">
+            <p>Summary: <span th:text="${movie.getSummary()}"></span></p>
             <p>Rating: <span th:text="${movie.getRating()}"></span></p>
-        </th:block>
+            <p>Production: <span th:text="${movie.getProduction().getName()}"></span></p>
+            <div>
+                <form th:action="@{'/movies/delete/{id}' (id=${movie.id})}"
+                      th:method="DELETE" th:id="${movie.id+ 'f'}">
+                    <button type="submit"
+                            name="Delete"
+                            class="btn btn-sm btn-danger delete-product"
+                            th:form="${movie.id+ 'f'}">
+                        <i class="fa fa-trash">Delete</i>
+                    </button>
+                </form>
+                <a th:href="@{'/movies/edit-form/{id}' (id=${movie.getId()})}"
+                   class="btn btn-sm btn-info edit-product">
+                    <i class="fa fa-trash">Edit</i>
+                </a>
+            </div>
+        </div>
         <h2>Choose number of tickets:</h2>
-        <input type="number" name="numTickets" min="1" max="10"><br/>
+        <input type="number" name="numTickets" id="numTickets" min="1" max="10" form="ticket"><br/>
         <h2>Your name:</h2>
-        <input type="text" name="clientName"><br/>
+        <input type="text" name="clientName" id="clientName" form="ticket"><br/>
         <br/>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" form="ticket">
     </form>
 </main>
 </body>

@@ -1,6 +1,5 @@
-package mk.ukim.finki.lab.web;
+package mk.ukim.finki.lab.web.servlet;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +23,7 @@ public class ClientOrdersServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         IWebExchange webExchange = JakartaServletWebApplication.buildApplication(getServletContext()).buildExchange(req,resp);
         WebContext webContext = new WebContext(webExchange);
         String titleSearchString = req.getParameter("searchByTitle");

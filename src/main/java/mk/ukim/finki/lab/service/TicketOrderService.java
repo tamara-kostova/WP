@@ -16,9 +16,9 @@ public class TicketOrderService implements ITicketOrderService{
     }
 
     @Override
-    public TicketOrder placeOrder(String movieTitle, String clientName, String address, int numberOfTickets) {
-        if (movieTitle!=null && clientName!=null && address!=null && numberOfTickets!=0){
-            TicketOrder ticketOrder = new TicketOrder(movieTitle,clientName,address, (long) numberOfTickets);
+    public TicketOrder placeOrder(String movieTitle, String clientName, int numberOfTickets) {
+        if (movieTitle!=null && clientName!=null && numberOfTickets!=0){
+            TicketOrder ticketOrder = new TicketOrder(movieTitle,clientName, (long) numberOfTickets);
             return ticketOrderRepository.placeOrder(ticketOrder);
         }
         else

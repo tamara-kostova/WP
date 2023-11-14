@@ -1,4 +1,4 @@
-package mk.ukim.finki.lab.web;
+package mk.ukim.finki.lab.web.servlet;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,7 +13,7 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
 
-@WebServlet
+@WebServlet(urlPatterns = "/servlet/movies")
 public class MovieListServlet extends HttpServlet {
     private final SpringTemplateEngine springTemplateEngine;
     private final MovieService movieService;
@@ -67,8 +67,7 @@ public class MovieListServlet extends HttpServlet {
         String movieTitle = req.getParameter("movieTitle");
         String numberOfTickets = req.getParameter("numTickets");
         String clientName = req.getParameter("clientName");
-        String ipAddress = req.getRemoteAddr();
-        ticketOrderService.placeOrder(movieTitle,clientName,ipAddress,Integer.parseInt(numberOfTickets));
+        ticketOrderService.placeOrder(movieTitle,clientName,Integer.parseInt(numberOfTickets));
         resp.sendRedirect("/ticketOrder?movieTitle=" + movieTitle + "&numTickets=" + numberOfTickets+ "&clientName=" + clientName);
     }
 }

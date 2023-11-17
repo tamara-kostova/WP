@@ -10,4 +10,7 @@ public interface ITicketOrderService {
     List<TicketOrder> getOrders ();
     List<TicketOrder> searchOrdersByTitle(String text);
     List<TicketOrder> searchOrdersByClient(String text);
+    TicketOrder editOrder(long id, long numTickets);
+
+    void deleteOrder(long id);
 }

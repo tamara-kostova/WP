@@ -30,7 +30,21 @@
 <th:block th:each="order: ${orders}">
     <p >Client name: <span th:text="${order.getClientName()}"></span></p>
     <p >Movie: <span th:text="${order.getMovieTitle()}"></span></p>
-    <p>Number of tickets: <span th:text="${order.getNumberOfTickets()}"></span></p>
+    <form method="post" th:action="@{'/clientOrders/edit/{id}' (id=${order.getId()})}">
+        <input id="id" type="hidden" name="id"
+               th:value="${order.getId()}">
+        <label for="numTickets">Number of tickets:</label>
+        <input type="text"
+               class="form-control"
+               id="numTickets"
+               name="numTickets"
+               th:value="${order.getNumberOfTickets()}"
+               required>
+            <button id="submit" type="submit" class="btn btn-primary">Save number of tickets</button>
+    </form>
+    <form method="post" th:action="@{'/clientOrders/delete/{id}' (id=${order.getId()})}" id="delete">
+        <button form="delete" type="submit" class="btn btn-primary">Delete order</button>
+    </form>
 </th:block>
 <a type="button" class="btn btn-primary" href="/movies">Back to movies list</a>
 </body>

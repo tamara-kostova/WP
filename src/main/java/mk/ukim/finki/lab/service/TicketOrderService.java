@@ -37,4 +37,14 @@ public class TicketOrderService implements ITicketOrderService{
     public List<TicketOrder> searchOrdersByClient(String text) {
         return ticketOrderRepository.searchOrdersByClient(text);
     }
+
+    @Override
+    public TicketOrder editOrder(long id, long numTickets) {
+        return ticketOrderRepository.editOrder(id, numTickets);
+    }
+
+    @Override
+    public void deleteOrder(long id) {
+        ticketOrderRepository.deleteById(id);
+    }
 }

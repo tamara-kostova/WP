@@ -1,11 +1,10 @@
 package mk.ukim.finki.lab.web.controller;
 
+import mk.ukim.finki.lab.model.TicketOrder;
 import mk.ukim.finki.lab.service.TicketOrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/clientOrders")
@@ -28,5 +27,15 @@ public class ClientOrdersController {
         else
             model.addAttribute("orders", ticketOrderService.getOrders());
         return "clientOrders";
+    }
+    @PostMapping("/edit/{id}")
+    public String editOrder(@PathVariable long id, @RequestParam int numTickets){
+        ticketOrderService.editOrder(id,numTickets);
+        return "redirect:/clientOrders";
+    }
+    @PostMapping("/delete/{id}")
+    public String deleteOrder(@PathVariable long id){
+        ticketOrderService.deleteOrder(id);
+        return "redirect:/clientOrders";
     }
 }

@@ -1,6 +1,7 @@
 package mk.ukim.finki.lab.service;
 
 import mk.ukim.finki.lab.model.Movie;
+import mk.ukim.finki.lab.model.Production;
 import mk.ukim.finki.lab.repository.MovieRepository;
 import mk.ukim.finki.lab.repository.ProductionRepository;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class MovieService implements IMovieService {
     }
 
     @Override
-    public Optional<Movie> findById(long id) {
+    public Optional<Movie> findById(Long id) {
 
         return movieRepository.findById(id);
     }
@@ -33,22 +34,35 @@ public class MovieService implements IMovieService {
     @Override
     public List<Movie> searchMovies(String text) {
 
-        return movieRepository.searchMovies(text);
+        return movieRepository.findByTitleLike(text);
     }
     @Override
-    public List<Movie> searchMoviesByRating(String text) {
-        return movieRepository.searchMoviesByRating(text);
+    public List<Movie> searchMoviesByRatingHigherThan(double rating) {
+
+        return movieRepository.findByRatingGreaterThanEqual(rating);
     }
 
     @Override
     public Movie saveMovie(String movieTitle, String summary, double rating, long productionId) {
         if (movieTitle.isEmpty() || summary.isEmpty() || rating<0 || productionRepository.findById(productionId)==null)
             throw new IllegalArgumentException();
-        return movieRepository.addMovie(new Movie(movieTitle,summary,rating,productionRepository.findById(productionId)));
+        return movieRepository.save(new Movie(movieTitle,summary,rating, productionRepository.findById(productionId).get()));
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(Long id) {
         movieRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Movie> edit(Long id, String movieTitle, String summary, double rating, long productionid) {
+        Movie movie = movieRepository.findById(id).orElseThrow();
+        Production production = productionRepository.findById(productionid).orElseThrow();
+        movie.setTitle(movieTitle);
+        movie.setSummary(summary);
+        movie.setRating(rating);
+        movie.setProduction(production);
+        movieRepository.save(movie);
+        return Optional.of(movie);
     }
 }

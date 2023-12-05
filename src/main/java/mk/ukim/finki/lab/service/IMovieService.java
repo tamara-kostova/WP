@@ -7,9 +7,10 @@ import java.util.Optional;
 
 public interface IMovieService {
     List<Movie> listAll();
-    Optional<Movie> findById(long id);
+    Optional<Movie> findById(Long id);
     List<Movie> searchMovies(String text);
-    List<Movie> searchMoviesByRating(String text);
+    List<Movie> searchMoviesByRatingHigherThan(double rating);
     Movie saveMovie(String movieTitle, String summary, double rating, long productionId);
-    void deleteById(long id);
+    void deleteById(Long id);
+    Optional<Movie> edit(Long id, String movieTitle, String summary, double rating, long productionid);
 }

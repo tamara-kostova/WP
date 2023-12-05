@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -23,15 +24,15 @@ public class MovieController {
         this.ticketOrderService = ticketOrderService;
     }
     @GetMapping("/movies")
-    public String getMoviesPage(@RequestParam(required = false) String error, @RequestParam(required = false) String searchByTitle, @RequestParam(required = false) String searchByRating, Model model){
+    public String getMoviesPage(@RequestParam(required = false) String error, @RequestParam(required = false) String searchByTitle, @RequestParam(required = false) Double searchByRating, Model model){
         if (error != null && !error.isEmpty()) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
         if (searchByTitle!=null && !searchByTitle.isEmpty())
             model.addAttribute("movies", movieService.searchMovies(searchByTitle));
-        else if (searchByRating!=null&&!searchByRating.isEmpty())
-            model.addAttribute("movies", movieService.searchMoviesByRating(searchByRating));
+        else if (searchByRating!=null)
+            model.addAttribute("movies", movieService.searchMoviesByRatingHigherThan(searchByRating));
         else
             model.addAttribute("movies", movieService.listAll());
         return "listMovies";
@@ -49,7 +50,7 @@ public class MovieController {
             List<Production> productions = productionService.findAll();
             model.addAttribute("productions", productions);
             model.addAttribute("movie", movie);
-            return "add-movie";
+            return "edit-movie";
         }
         return "redirect:/movies";
     }
@@ -64,11 +65,18 @@ public class MovieController {
         return "redirect:/movies";
     }
     @PostMapping("/movies")
-    public String TicketOrder(@RequestParam String movieTitle, @RequestParam int numTickets, @RequestParam String clientName,Model model){
-        ticketOrderService.placeOrder(movieTitle,clientName,numTickets);
+    public String TicketOrder(@RequestParam String movieTitle, @RequestParam int numTickets, @RequestParam String username, @RequestParam LocalDateTime dateCreated, Model model){
+        ticketOrderService.save(movieTitle, username,numTickets, dateCreated);
         model.addAttribute("movieTitle",movieTitle);
         model.addAttribute("numTickets",numTickets);
-        model.addAttribute("clientName",clientName);
-        return "redirect:/ticketOrder?movieTitle=" + movieTitle + "&numTickets=" + numTickets+ "&clientName=" + clientName;
+        model.addAttribute("clientName", username);
+        model.addAttribute("dateCreated", dateCreated);
+        return "redirect:/ticketOrder?movieTitle=" + movieTitle + "&numTickets=" + numTickets+ "&clientName=" + username+"&dateCreated=" +dateCreated;
     }
+    @PostMapping("/movies/edit/{id}")
+    public String editMovie(@PathVariable("id") Long id,@RequestParam String movieTitle, @RequestParam String summary, @RequestParam double rating, @RequestParam long productionid) {
+        movieService.edit(id, movieTitle,summary,rating,productionid);
+        return "redirect:/movies";
+    }
+
 }

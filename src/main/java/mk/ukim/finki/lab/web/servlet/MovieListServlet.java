@@ -12,6 +12,7 @@ import org.thymeleaf.web.IWebExchange;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @WebServlet(urlPatterns = "/servlet/movies")
 public class MovieListServlet extends HttpServlet {
@@ -43,7 +44,7 @@ public class MovieListServlet extends HttpServlet {
                     resp.getWriter()
             );
         }else if (ratingSearchString!=null && !ratingSearchString.isEmpty()) {
-            context.setVariable("movies", movieService.searchMoviesByRating(ratingSearchString));
+            context.setVariable("movies", movieService.searchMoviesByRatingHigherThan(Double.parseDouble(ratingSearchString)));
             springTemplateEngine.process(
                     "listMovies.html",
                     context,
@@ -67,7 +68,8 @@ public class MovieListServlet extends HttpServlet {
         String movieTitle = req.getParameter("movieTitle");
         String numberOfTickets = req.getParameter("numTickets");
         String clientName = req.getParameter("clientName");
-        ticketOrderService.placeOrder(movieTitle,clientName,Integer.parseInt(numberOfTickets));
+        LocalDateTime dateCreated = LocalDateTime.parse(req.getParameter("dateCreated"));
+        ticketOrderService.save(movieTitle,clientName,Integer.parseInt(numberOfTickets), dateCreated);
         resp.sendRedirect("/ticketOrder?movieTitle=" + movieTitle + "&numTickets=" + numberOfTickets+ "&clientName=" + clientName);
     }
 }

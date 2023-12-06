@@ -16,4 +16,5 @@ public interface ITicketOrderService {
     Optional<TicketOrder> editOrder(Long id, long numTickets);
     void deleteOrder(Long id);
     List<TicketOrder> searchOrdersBetweenDates(LocalDateTime from, LocalDateTime to);
+    Optional<TicketOrder> discountTicketOrder(Long TicketOrderId, Long discountId);
 }

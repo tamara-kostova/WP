@@ -18,15 +18,15 @@ public class ClientOrdersController {
         this.ticketOrderService = ticketOrderService;
     }
     @GetMapping
-    public String getClientOrdersPage(@RequestParam(required = false) String error, @RequestParam(required = false) String titleSearchString, @RequestParam(required = false) String clientSearchString, @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime dateFrom, @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime dateTo, Model model){
+    public String getClientOrdersPage(@RequestParam(required = false) String error, @RequestParam(required = false) String searchByTitle, @RequestParam(required = false) String searchByClient, @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime dateFrom, @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime dateTo, Model model){
         if (error != null && !error.isEmpty()) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
-        if (titleSearchString!=null && !titleSearchString.isEmpty())
-            model.addAttribute("orders", ticketOrderService.searchOrdersByTitle(titleSearchString));
-        else if (clientSearchString!=null&&!clientSearchString.isEmpty())
-            model.addAttribute("orders", ticketOrderService.searchOrdersByClient(clientSearchString));
+        if (searchByTitle!=null && !searchByTitle.isEmpty())
+            model.addAttribute("orders", ticketOrderService.searchOrdersByTitle(searchByTitle));
+        else if (searchByClient!=null&&!searchByClient.isEmpty())
+            model.addAttribute("orders", ticketOrderService.searchOrdersByClient(searchByClient));
         else if (dateFrom!=null && dateTo!=null)
             model.addAttribute("orders",ticketOrderService.searchOrdersBetweenDates(dateFrom,dateTo));
         else

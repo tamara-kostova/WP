@@ -18,6 +18,9 @@ public class TicketOrder {
     private User user;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dateCreated;
+    private Double price;
+    @ManyToOne
+    private Discount discount;
     public TicketOrder(){
 
     }

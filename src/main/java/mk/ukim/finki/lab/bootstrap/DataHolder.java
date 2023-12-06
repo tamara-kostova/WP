@@ -17,18 +17,21 @@ public class DataHolder {
     public static List<User> users = null;
 
     public static List<ShoppingCart> shoppingCarts = null;
+    public static List<Discount> discounts = null;
     private final MovieRepository movieRepository;
     private final ProductionRepository productionRepository;
     private final TicketOrderRepository ticketOrderRepository;
     private final ShoppingCartRepository shoppingCartRepository;
     private final UserRepository userRepository;
+    private final DiscountRepository discountRepository;
 
-    public DataHolder(MovieRepository movieRepository, ProductionRepository productionRepository, TicketOrderRepository ticketOrderRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository) {
+    public DataHolder(MovieRepository movieRepository, ProductionRepository productionRepository, TicketOrderRepository ticketOrderRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, DiscountRepository discountRepository) {
         this.movieRepository = movieRepository;
         this.productionRepository = productionRepository;
         this.ticketOrderRepository = ticketOrderRepository;
         this.shoppingCartRepository = shoppingCartRepository;
         this.userRepository = userRepository;
+        this.discountRepository = discountRepository;
     }
 
 
@@ -39,6 +42,7 @@ public class DataHolder {
         ticketOrders = new ArrayList<>();
         users = new ArrayList<>();
         shoppingCarts = new ArrayList<>();
+        discounts = new ArrayList<>();
         if (userRepository.count()==0){
             users.add(new User("tamara.kostova", "Tamara", "Kostova", "tk"));
             users.add(new User("aleksandra.nastoska", "Aleksandra", "Nastoska", "an"));
@@ -65,6 +69,11 @@ public class DataHolder {
             movies.add(new Movie("Inception ","Cobb steals information from his targets by entering their dreams. He is wanted for his alleged role in his wife's murder and his only chance at redemption is to perform a nearly impossible task.",8.9,productions.get(0)));
             movies.add(new Movie("Forrest Gump","Forrest, a man with low IQ, recounts the early years of his life when he found himself in the middle of key historical events. All he wants now is to be reunited with his childhood sweetheart, Jenny.",8.7,productions.get(2)));
             movieRepository.saveAll(movies);
+        }
+        if (discountRepository.count()==0){
+            discounts.add(new Discount("Black Friday",0.5));
+            discounts.add(new Discount("Christmas", 0.2));
+            discountRepository.saveAll(discounts);
         }
         }
 

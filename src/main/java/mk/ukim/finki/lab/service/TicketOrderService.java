@@ -1,8 +1,10 @@
 package mk.ukim.finki.lab.service;
 
+import mk.ukim.finki.lab.model.Discount;
 import mk.ukim.finki.lab.model.ShoppingCart;
 import mk.ukim.finki.lab.model.TicketOrder;
 import mk.ukim.finki.lab.model.User;
+import mk.ukim.finki.lab.repository.DiscountRepository;
 import mk.ukim.finki.lab.repository.ShoppingCartRepository;
 import mk.ukim.finki.lab.repository.TicketOrderRepository;
 import mk.ukim.finki.lab.repository.UserRepository;
@@ -18,8 +20,9 @@ public class TicketOrderService implements ITicketOrderService{
     TicketOrderRepository ticketOrderRepository;
     UserRepository userRepository;
     ShoppingCartRepository shoppingCartRepository;
+    DiscountRepository discountRepository;
 
-    public TicketOrderService(TicketOrderRepository ticketOrderRepository, UserRepository userRepository, ShoppingCartRepository shoppingCartRepository) {
+    public TicketOrderService(TicketOrderRepository ticketOrderRepository, UserRepository userRepository, ShoppingCartRepository shoppingCartRepository, DiscountRepository discountRepository) {
         this.ticketOrderRepository = ticketOrderRepository;
         this.userRepository = userRepository;
         this.shoppingCartRepository = shoppingCartRepository;
@@ -81,5 +84,16 @@ public class TicketOrderService implements ITicketOrderService{
     @Override
     public List<TicketOrder> searchOrdersBetweenDates(LocalDateTime from, LocalDateTime to) {
         return ticketOrderRepository.findByDateCreatedBetween(from, to);
+    }
+
+    @Override
+    public Optional<TicketOrder> discountTicketOrder(Long TicketOrderId, Long discountId) {
+        TicketOrder ticketOrder = ticketOrderRepository.findById(TicketOrderId).orElseThrow();
+        Discount discount = discountRepository.findById(discountId).get();
+        ticketOrder.setDiscount(discount);
+        Double newPrice = ticketOrder.getPrice()*(1-discount.getPercent());
+        ticketOrder.setPrice(newPrice);
+        ticketOrderRepository.save(ticketOrder);
+        return Optional.of(ticketOrder);
     }
 }

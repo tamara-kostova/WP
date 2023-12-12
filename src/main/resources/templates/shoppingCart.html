@@ -38,7 +38,7 @@
                         </thead>
                         <tbody>
                         <tr th:each="ticketorder : ${ticketorders}">
-                            <td th:text="${ticketorder.getMovieTitle()()}"></td>
+                            <td th:text="${ticketorder.getMovieTitle()}"></td>
                             <td th:text="${ticketorder.getUser().getUsername()}"></td>
                             <td th:text="${ticketorder.getNumberOfTickets()}"></td>
                             <td th:text="${ticketorder.getDateCreated()}"></td>

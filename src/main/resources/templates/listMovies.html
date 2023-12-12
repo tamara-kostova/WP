@@ -23,27 +23,83 @@
 </head>
 <body>
 <header>
-    <h1>Welcome to our Movie Ticket Shop App</h1>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/movies">Movie Ticket Shop</a>
+            <h6 class="nav-item" th:if="${session.user != null}">
+                Welcome user: <span th:text="${session.user.getUsername()}"></span>!
+            </h6>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
+                <ul class="navbar-nav m-auto">
+                    <li class="nav-item m-auto">
+                        <a class="nav-link active" href="/movies/add-form">Add new movie</a>
+                    </li>
+                    <li class="nav-item m-auto">
+                        <a class="nav-link active" href="/clientOrders">Client Orders</a>
+                    </li>
+                </ul>
+
+                    <div class="input-group input-group-sm">
+                        <form th:method="get" th:action="@{/movies}">
+                            <input type="text" id="searchByTitle" name="searchByTitle"
+                                   placeholder="Search by Title" class="form-control"
+                                   aria-label="Small"
+                                   aria-describedby="inputGroup-sizing-sm">
+                            <button type="submit"class="btn btn-secondary btn-number">
+                                <i class="fa fa-search"></i></button>
+                        </form>
+                        <form th:method="get" th:action="@{/movies}">
+                            <input type="number" step="0.1" id="searchByRating"
+                                   name="searchByRating" min="1" max="10"
+                                   placeholder="Search by rating" class="form-control"
+                                   aria-label="Small"
+                                   aria-describedby="inputGroup-sizing-sm">
+                            <button type="submit" class="btn btn-secondary btn-number">
+                                <i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-success btn-sm ml-3" href="/shoppingCart">
+                            <i class="fa fa-shopping-cart"></i> Cart
+                        </a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user != null}">
+                        <a class="btn btn-light btn-sm ml-3" href="/logout">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <a class="btn btn-light btn-sm ml-3" href="/login">
+                            <i class="fa-solid fa-right-to-bracket"></i> Login
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </header>
 <main>
-    <div>
-        <a type="button" href="/movies/add-form" class="btn btn-dark add-movie-btn">
-            Add new movie
-        </a>
-        <a type="button" href="/clientOrders" class="btn btn-primary" >Client Orders</a>
-        <a type="button" href="/shoppingCart" class="btn btn-primary" >Shopping Cart</a>
-    </div>
     <h2>Choose movie:</h2>
-    <form th:method="get" th:action="@{/movies}">
-        <label for="searchByTitle">Search by title:</label>
-        <input type="text" id="searchByTitle" name="searchByTitle">
-        <button type="submit">Search</button>
-    </form>
-    <form th:method="get" th:action="@{/movies}">
-        <label for="searchByRating">Search by rating (higher than):</label>
-        <input type="number" step="0.1" id="searchByRating" name="searchByRating" min="1" max="10">
-        <button type="submit">Search</button>
-    </form>
+<!--    <form th:method="get" th:action="@{/movies}">-->
+<!--        <label for="searchByTitle">Search by title:</label>-->
+<!--        <input type="text" id="searchByTitle" name="searchByTitle">-->
+<!--        <button type="submit">Search</button>-->
+<!--    </form>-->
+<!--    <form th:method="get" th:action="@{/movies}">-->
+<!--        <label for="searchByRating">Search by rating (higher than):</label>-->
+<!--        <input type="number" step="0.1" id="searchByRating" name="searchByRating" min="1" max="10">-->
+<!--        <button type="submit">Search</button>-->
+<!--    </form>-->
     <br>
     <form th:method="POST" th:action="@{/movies}" id="ticket">
         <div th:each="movie : ${movies}">

@@ -1,10 +1,8 @@
 package mk.ukim.finki.lab.web.controller;
 
-import mk.ukim.finki.lab.model.Movie;
-import mk.ukim.finki.lab.model.Production;
-import mk.ukim.finki.lab.service.IMovieService;
-import mk.ukim.finki.lab.service.IProductionService;
-import mk.ukim.finki.lab.service.ITicketOrderService;
+import jakarta.servlet.http.HttpServletRequest;
+import mk.ukim.finki.lab.model.*;
+import mk.ukim.finki.lab.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +16,12 @@ public class MovieController {
     private final IMovieService movieService;
     private final IProductionService productionService;
     private final ITicketOrderService ticketOrderService;
-    public MovieController(IMovieService movieService, IProductionService productionService, ITicketOrderService ticketOrderService) {
+    private final ShoppingCartService shoppingCartService;
+    public MovieController(IMovieService movieService, IProductionService productionService, ITicketOrderService ticketOrderService, ShoppingCartService shoppingCartService) {
         this.movieService = movieService;
         this.productionService = productionService;
         this.ticketOrderService = ticketOrderService;
+        this.shoppingCartService = shoppingCartService;
     }
     @GetMapping("/movies")
     public String getMoviesPage(@RequestParam(required = false) String error, @RequestParam(required = false) String searchByTitle, @RequestParam(required = false) Double searchByRating, Model model){
@@ -65,8 +65,9 @@ public class MovieController {
         return "redirect:/movies";
     }
     @PostMapping("/movies")
-    public String TicketOrder(@RequestParam String movieTitle, @RequestParam int numTickets, @RequestParam String username, @RequestParam LocalDateTime dateCreated, Model model){
-        ticketOrderService.save(movieTitle, username,numTickets, dateCreated);
+    public String TicketOrder(@RequestParam String movieTitle, @RequestParam int numTickets, @RequestParam String username, @RequestParam LocalDateTime dateCreated, HttpServletRequest request, Model model){
+        TicketOrder newTicketOrder = ticketOrderService.save(movieTitle, username,numTickets, dateCreated);
+        shoppingCartService.addProductToShoppingCart(username,newTicketOrder.getId());
         model.addAttribute("movieTitle",movieTitle);
         model.addAttribute("numTickets",numTickets);
         model.addAttribute("clientName", username);

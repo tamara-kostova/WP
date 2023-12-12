@@ -46,7 +46,7 @@ public class DataHolder {
         if (userRepository.count()==0){
             users.add(new User("tamara.kostova", "Tamara", "Kostova", "tk"));
             users.add(new User("aleksandra.nastoska", "Aleksandra", "Nastoska", "an"));
-            users.add(new User("dina.galevska", "dg", "Galevska", "dg"));
+            users.add(new User("dina.galevska", "Dina", "Galevska", "dg"));
             userRepository.saveAll(users);
         }
         if (productionRepository.count()==0){

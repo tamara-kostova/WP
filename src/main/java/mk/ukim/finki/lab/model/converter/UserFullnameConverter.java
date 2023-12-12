@@ -28,21 +28,21 @@ public class UserFullnameConverter implements AttributeConverter <UserFullname, 
         if (dbUserName == null || dbUserName.isEmpty()) {
             return null;
         }
-        String[] pieces = dbUserName.split(SEPARATOR);
+        String[] parts = dbUserName.split(SEPARATOR);
 
-        if (pieces == null || pieces.length == 0) {
+        if (parts == null || parts.length == 0) {
             return null;
         }
         UserFullname userFullname = new UserFullname();
-        String firstPiece = !pieces[0].isEmpty() ? pieces[0] : null;
+        String surname = !parts[0].isEmpty() ? parts[0] : null;
         if (dbUserName.contains(SEPARATOR)) {
-            userFullname.setSurname(firstPiece);
-            if (pieces.length >= 2 && pieces[1] != null
-                    && !pieces[1].isEmpty()) {
-                userFullname.setName(pieces[1]);
+            userFullname.setSurname(surname);
+            if (parts.length >= 2 && parts[1] != null
+                    && !parts[1].isEmpty()) {
+                userFullname.setName(parts[1]);
             }
         } else {
-            userFullname.setName(firstPiece);
+            userFullname.setName(surname);
         }
         return userFullname;
     }

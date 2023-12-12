@@ -27,10 +27,7 @@ public class User {
 
     public User(String username, String name, String surname, String password) {
         this.username = username;
-        UserFullname fullname = new UserFullname();
-        fullname.setName(name);
-        fullname.setSurname(surname);
-        this.fullname = fullname;
+        this.fullname = new UserFullname(name, surname);
         this.password = password;
     }
 }

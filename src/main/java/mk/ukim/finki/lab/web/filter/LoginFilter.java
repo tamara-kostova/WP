@@ -9,7 +9,7 @@ import mk.ukim.finki.lab.model.User;
 
 import java.io.IOException;
 
-@WebFilter(filterName = "auth-filter", urlPatterns = "/*",
+@WebFilter(filterName = "auth-filter", urlPatterns = "/movies/*",
         dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD},
         initParams = {
             @WebInitParam(name = "login-path", value = "/login"),
